@@ -31,7 +31,7 @@ const Home = ({ isMobile }: HomeProps) => {
     <div
       className={`${
         darkMode ? "dark" : ""
-      } flex justify-center h-screen w-screen bg-gray-200 dark:bg-slate-950 relative`}
+      } flex justify-center h-screen w-screen font-inter bg-gray-200 dark:bg-slate-950 relative`}
     >
       <div
         className="pointer-events-none absolute inset-0 z-30 transition duration-300"
