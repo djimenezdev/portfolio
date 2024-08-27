@@ -82,9 +82,9 @@ const About = ({ setActive }: AboutProps) => {
           great user experiences.
         </p>
         <p className="text-base text-gray-700 dark:text-slate-400 leading-7">
-          Outside of my professional life, you'll see me either with my
+          Outside of my professional life, you&apos;ll see me either with my
           girlfriend, watching a ton of sports clips, fishing or watching a good
-          movie. I'm also a devoted{" "}
+          movie. I&apos;m also a devoted{" "}
           <Anchor
             href="https://www.avengedsevenfold.io/home"
             text="Avenged Sevenfold Deathbat"

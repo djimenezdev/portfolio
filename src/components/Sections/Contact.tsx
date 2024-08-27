@@ -70,8 +70,9 @@ const Contact = ({ setActive }: ContactProps) => {
       </div>
       <div>
         <p className="mt-3 mb-6 text-base max-w-xl xl:text-lg text-gray-700 dark:text-slate-400 leading-normal text-center mx-auto">
-          I'm always open to new opportunities and collaborations. Feel free to
-          reach out to me if you have any questions or just want to say hi!
+          I&apos;m always open to new opportunities and collaborations. Feel
+          free to reach out to me if you have any questions or just want to say
+          hi!
         </p>
         <form action={handleSubmit} className="space-y-4 max-w-xl mx-auto">
           <div className="space-y-2">
