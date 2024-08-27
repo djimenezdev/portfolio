@@ -6,6 +6,7 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { headers } from "next/headers";
 import { fromError, isZodErrorLike } from "zod-validation-error";
+import * as Sentry from "@sentry/nextjs";
 
 export type ErrorFields = {
   email: string;
@@ -101,6 +102,7 @@ export async function sendEmail(formData: FormData) {
         errors: errors,
       };
     } else {
+      Sentry.captureException(error);
       // convert error to string
       const errorMessage =
         error instanceof Error ? error.message : String(error);
