@@ -9,7 +9,7 @@ type SocialLinkProps = {
 
 const SocialLink = ({ href, ariaLabel, title, children }: SocialLinkProps) => {
   return (
-    <li className="mr-5 text-xs shrink-0">
+    <li className="mr-5 text-xs shrink-0 cursor-pointer">
       <a
         className="block hover:text-slate-200"
         href={href}

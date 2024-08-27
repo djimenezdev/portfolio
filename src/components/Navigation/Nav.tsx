@@ -1,29 +1,24 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import NavUrl from "./NavUrl";
+import { navLinks } from "@/data/navlinks";
 
-const Nav = () => {
-  const [active, setActive] = useState(1);
+type NavProps = {
+  active: number;
+};
+
+const Nav = ({ active }: NavProps) => {
   return (
-    <nav className="nav hidden lg:block" aria-label="In-page jump links">
+    <nav className="nav hidden xl:block" aria-label="In-page jump links">
       <ul className="mt-14 w-max">
-        <NavUrl
-          href="#about"
-          title="About"
-          active={active}
-          setActive={setActive}
-        />
-        <NavUrl
-          href="#experience"
-          title="Experience"
-          active={active}
-          setActive={setActive}
-        />
-        <NavUrl
-          href="#projects"
-          title="Projects"
-          active={active}
-          setActive={setActive}
-        />
+        {navLinks.map((link) => (
+          <NavUrl
+            key={link.urlNum}
+            urlNum={link.urlNum}
+            href={link.href}
+            title={link.title}
+            active={active}
+          />
+        ))}
       </ul>
     </nav>
   );
