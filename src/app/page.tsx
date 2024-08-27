@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { CreativeWork, WithContext } from "schema-dts";
 import Home from "@/components/Home";
 import { isMobileDevice } from "@/lib/device";
-import { getGeolocation, isDarkMode } from "@/lib/geolocation";
+import { getClientIp, getGeolocation, isDarkMode } from "@/lib/geolocation";
 
 const jsonLd: WithContext<CreativeWork> = {
   "@context": "https://schema.org",
@@ -47,9 +47,9 @@ export default async function HomePage() {
   // const isTablet = isTabletDevice();
 
   const headersList = headers();
-  const ip = headersList.get("x-forwarded-for") || "";
+  const ip = getClientIp(headersList);
 
-  const geoData = ip !== "::1" ? await getGeolocation(ip) : null;
+  const geoData = ip !== null ? await getGeolocation(ip) : null;
 
   const isDark = geoData
     ? await isDarkMode(geoData.latitude, geoData.longitude)

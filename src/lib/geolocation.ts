@@ -1,5 +1,22 @@
 import { parseTimeString } from "./helpers";
 
+// Add this function to handle IP address retrieval more securely
+export function getClientIp(headersList: Headers): string | null {
+  // Check for trusted proxy headers first
+  const xRealIp = headersList.get("x-real-ip");
+  if (xRealIp) return xRealIp;
+
+  const xForwardedFor = headersList.get("x-forwarded-for");
+  if (xForwardedFor) {
+    // Use the last IP in the list (added by the nearest proxy)
+    const ips = xForwardedFor.split(",").map((ip) => ip.trim());
+    return ips[ips.length - 1];
+  }
+
+  // Fallback to direct connection IP
+  return headersList.get("remote-addr") || null;
+}
+
 export const getGeolocation = async (ip: string) => {
   try {
     const res = await fetch(
