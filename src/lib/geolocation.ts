@@ -36,7 +36,7 @@ export const isDarkMode = async (lat: number, long: number) => {
     //   res returns results object which returns another object containing sunrise and sunset
     // use that data to return
     const { date, sunrise, sunset } = resData.results;
-
+    console.log(date, sunrise, sunset);
     const now = new Date();
     const sunriseTime = parseTimeString(date, sunrise);
     const sunsetTime = parseTimeString(date, sunset);

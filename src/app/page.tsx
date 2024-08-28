@@ -50,7 +50,7 @@ export default async function HomePage() {
   const geoData = JSON.parse(headersList.get("x-geo-data") || "{}");
 
   // const geoData = ip && ip !== "unknown" ? await getGeolocation(ip) : false;
-
+  console.log(geoData?.latitude, geoData?.longitude);
   const isDark =
     geoData?.latitude && geoData?.longitude
       ? await isDarkMode(geoData.latitude, geoData.longitude)
