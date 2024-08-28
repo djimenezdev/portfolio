@@ -13,18 +13,19 @@ export function getClientIp(headersList: Headers): string | null {
   return headersList.get("remote-addr") || null;
 }
 
-export const getGeolocation = async (ip: string) => {
+/* export const getGeolocation = async (ip: string) => {
   try {
     const res = await fetch(
       `https://api.ip2location.io/?key=${process.env.IP2_LOCATION_KEY}&ip=${ip}`
     );
     const resData = await res.json();
+    console.log(resData);
     return resData;
   } catch (error) {
     console.error("Error fetching geolocation:", error);
     return null;
   }
-};
+}; */
 
 export const isDarkMode = async (lat: number, long: number) => {
   try {

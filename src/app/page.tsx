@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { CreativeWork, WithContext } from "schema-dts";
 import Home from "@/components/Home";
 import { isMobileDevice } from "@/lib/device";
-import { getClientIp, getGeolocation, isDarkMode } from "@/lib/geolocation";
+import { isDarkMode } from "@/lib/geolocation";
 
 const jsonLd: WithContext<CreativeWork> = {
   "@context": "https://schema.org",
@@ -47,13 +47,14 @@ export default async function HomePage() {
   // const isTablet = isTabletDevice();
 
   const headersList = headers();
-  const ip = getClientIp(headersList);
+  const geoData = JSON.parse(headersList.get("x-geo-data") || "{}");
 
-  const geoData = ip && ip !== "unknown" ? await getGeolocation(ip) : false;
+  // const geoData = ip && ip !== "unknown" ? await getGeolocation(ip) : false;
 
-  const isDark = geoData
-    ? await isDarkMode(geoData.latitude, geoData.longitude)
-    : false;
+  const isDark =
+    geoData?.latitude && geoData?.longitude
+      ? await isDarkMode(geoData.latitude, geoData.longitude)
+      : false;
 
   return (
     <>

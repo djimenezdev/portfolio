@@ -7,6 +7,7 @@ import { Redis } from "@upstash/redis";
 import { headers } from "next/headers";
 import { fromError, isZodErrorLike } from "zod-validation-error";
 import * as Sentry from "@sentry/nextjs";
+import { getClientIp } from "@/lib/geolocation";
 
 export type ErrorFields = {
   email: string;
@@ -47,11 +48,10 @@ export async function sendEmail(formData: FormData) {
     const validatedFields = schema.parse(emailFormData);
 
     // Get the user's IP address
-    const forwardedFor = headers().get("x-forwarded-for");
-    const ip = forwardedFor ? forwardedFor.split(",")[0] : "Unknown";
+    const forwardedFor = getClientIp(headers()) || "unknown";
 
     // Check the rate limit
-    const { success } = await ratelimit.limit(ip);
+    const { success } = await ratelimit.limit(forwardedFor);
     if (!success) {
       return {
         success: false,
