@@ -9,6 +9,7 @@ export function middleware(request: NextRequest) {
 
   // Check if the hosting platform provides the client's IP address and store it in a variable
   const ip = request.ip || "unknown";
+  console.log(ip);
 
   // Add the client's IP address to the request headers using the 'x-forwarded-for' field
   requestHeaders.set("x-forwarded-for", ip);
@@ -24,5 +25,5 @@ export function middleware(request: NextRequest) {
 // See "Matching Paths" below to learn more
 export const config = {
   matcher:
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|resume.pdf|monitoring-tunnel|icon).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|resume.pdf|monitoring|icon|ingest).*)",
 };
