@@ -2,10 +2,6 @@ import { parseTimeString } from "./helpers";
 
 // Add this function to handle IP address retrieval more securely
 export function getClientIp(headersList: Headers): string | null {
-  // Check for trusted proxy headers first
-  const xRealIp = headersList.get("x-real-ip");
-  if (xRealIp) return xRealIp;
-
   const xForwardedFor = headersList.get("x-forwarded-for");
   if (xForwardedFor) {
     // Use the last IP in the list (added by the nearest proxy)

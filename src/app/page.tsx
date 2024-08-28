@@ -49,7 +49,7 @@ export default async function HomePage() {
   const headersList = headers();
   const ip = getClientIp(headersList);
 
-  const geoData = ip !== null ? await getGeolocation(ip) : null;
+  const geoData = ip && ip !== "unknown" ? await getGeolocation(ip) : false;
 
   const isDark = geoData
     ? await isDarkMode(geoData.latitude, geoData.longitude)

@@ -52,7 +52,6 @@ export async function sendEmail(formData: FormData) {
 
     // Check the rate limit
     const { success } = await ratelimit.limit(ip);
-    console.log(success);
     if (!success) {
       return {
         success: false,

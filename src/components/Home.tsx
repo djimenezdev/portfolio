@@ -19,7 +19,7 @@ type HomeProps = {
 };
 
 const Home = ({ isMobile, isDark }: HomeProps) => {
-  const [darkMode, setDarkMode] = useState<boolean | null>(null);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const [active, setActive] = useState<number>(1);
   const [mouse] = useMouse();
 
