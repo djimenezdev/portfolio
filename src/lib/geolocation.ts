@@ -38,10 +38,28 @@ export const isDarkMode = async (lat: number, long: number) => {
     const { date, sunrise, sunset } = resData.results;
     console.log(date, sunrise, sunset);
     const now = new Date();
+    const nowUTC = new Date(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds()
+    );
     const sunriseTime = parseTimeString(date, sunrise);
     const sunsetTime = parseTimeString(date, sunset);
+    // If current time is after sunset, it's dark mode
+    if (nowUTC >= sunsetTime) {
+      return true;
+    }
 
-    return now < sunriseTime && now > sunsetTime;
+    // If current time is before sunrise, it's dark mode
+    if (nowUTC < sunriseTime) {
+      return true;
+    }
+
+    // Otherwise, it's light mode (between sunrise and sunset)
+    return false;
   } catch (error) {
     console.error("Error fetching geolocation:", error);
     return false;

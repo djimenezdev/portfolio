@@ -19,7 +19,7 @@ type HomeProps = {
 };
 
 const Home = ({ isMobile, isDark }: HomeProps) => {
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useState<boolean | null>(null);
   const [active, setActive] = useState<number>(1);
   const [mouse] = useMouse();
 
@@ -49,7 +49,7 @@ const Home = ({ isMobile, isDark }: HomeProps) => {
     >
       <div
         className="absolute w-12 h-12 max-[425px]:top-0 max-[425px]:right-2 top-3 right-6  sm:top-6 sm:right-10 flex items-center justify-center cursor-pointer"
-        onClick={() => setDarkMode((prev) => !prev)}
+        onClick={() => setDarkMode((prev) => (prev === null ? !isDark : !prev))}
       >
         {darkModeValue ? (
           <PiSunBold className="text-white text-3xl max-[425px]:text-2xl" />
