@@ -8,8 +8,6 @@ export function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   let ip = ipAddress(request) || "unknown";
   let geoData = geolocation(request);
-  console.log(ip);
-  console.log(geoData);
   // Check if the hosting platform provides the client's IP address and store it in a variable
   // if it's localhost, set it to unknown
   // Add the client's IP address to the request headers using the 'x-forwarded-for' field
