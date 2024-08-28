@@ -8,6 +8,7 @@ import { headers } from "next/headers";
 import { fromError, isZodErrorLike } from "zod-validation-error";
 import * as Sentry from "@sentry/nextjs";
 import { getClientIp } from "@/lib/geolocation";
+import { redirect } from "next/navigation";
 
 export type ErrorFields = {
   email: string;
@@ -114,3 +115,7 @@ export async function sendEmail(formData: FormData) {
     }
   }
 }
+
+export const redirectOnSuccess = async () => {
+  redirect("/");
+};

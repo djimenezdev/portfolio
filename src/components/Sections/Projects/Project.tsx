@@ -33,7 +33,7 @@ const Project = ({
               className="inline-flex items-baseline font-medium leading-tight text-gray-700 hover:text-blue-600 focus-visible:text-blue-600 dark:text-slate-200 dark:hover:text-teal-300 dark:focus-visible:text-teal-300  group/link text-base"
               aria-label={ariaLabel}
             >
-              <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 xl:block"></span>
+              <span className="absolute -inset-x-4 -inset-y-2.5 rounded md:-inset-x-6 md:-inset-y-4"></span>
               <span>
                 {title}
                 <span className="inline-block">

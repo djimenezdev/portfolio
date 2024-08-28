@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
-import { ErrorFields, sendEmail } from "@/app/actions";
+import { ErrorFields, redirectOnSuccess, sendEmail } from "@/app/actions";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { sleeper } from "@/lib/helpers";
 
 type ContactProps = {
   setActive: Dispatch<SetStateAction<number>>;
@@ -31,7 +32,10 @@ function SubmitButton() {
 const Contact = ({ setActive }: ContactProps) => {
   const [errors, setErrors] = useState<Partial<ErrorFields>>({});
 
-  const [complete, setComplete] = useState<boolean>(false);
+  const [complete, setComplete] = useState<{
+    completed: boolean;
+    success: boolean;
+  }>({ completed: false, success: false });
 
   const [ref, entry] = useIntersectionObserver({
     threshold: 0.8,
@@ -46,15 +50,25 @@ const Contact = ({ setActive }: ContactProps) => {
   }, [entry]);
 
   async function handleSubmit(formData: FormData) {
-    console.log("runs");
-    setErrors({});
-    setComplete(false);
     const result = await sendEmail(formData);
     if (result?.errors) {
+      console.log(result?.errors);
       setErrors(result?.errors);
+      setComplete((prev) => ({ ...prev, completed: true }));
+    } else {
+      console.log("success");
+      setComplete({ completed: true, success: true });
     }
-    setComplete(true);
   }
+
+  useEffect(() => {
+    if (complete.completed && complete.success) {
+      (async () => {
+        await sleeper(2000);
+        redirectOnSuccess();
+      })();
+    }
+  }, [complete]);
 
   return (
     <section
@@ -121,7 +135,7 @@ const Contact = ({ setActive }: ContactProps) => {
             )}
           </div>
           <SubmitButton />
-          {complete && (
+          {complete.completed && (
             <p
               className={`mt-4 text-sm ${
                 Object.keys(errors!).length === 0
