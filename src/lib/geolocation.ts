@@ -41,7 +41,7 @@ export const isDarkMode = async (lat: number, long: number) => {
     const sunriseTime = parseTimeString(date, sunrise);
     const sunsetTime = parseTimeString(date, sunset);
 
-    return now < sunriseTime || now > sunsetTime;
+    return now < sunriseTime && now > sunsetTime;
   } catch (error) {
     console.error("Error fetching geolocation:", error);
     return false;

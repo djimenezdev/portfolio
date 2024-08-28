@@ -48,7 +48,6 @@ export default async function HomePage() {
 
   const headersList = headers();
   const geoData = JSON.parse(headersList.get("x-geo-data") || "{}");
-  console.log(geoData);
 
   // const geoData = ip && ip !== "unknown" ? await getGeolocation(ip) : false;
 
