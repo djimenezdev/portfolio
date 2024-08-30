@@ -50,6 +50,7 @@ export default async function HomePage() {
   const geoData = JSON.parse(
     headersList.get("x-geo-data") || "{latitude: null, longitude: null}"
   );
+  console.log(geoData);
 
   const isDark = await isDarkMode(geoData);
 
