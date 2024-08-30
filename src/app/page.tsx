@@ -44,15 +44,14 @@ const jsonLd: WithContext<CreativeWork> = {
 
 export default async function HomePage() {
   const isMobile = isMobileDevice();
-  // const isTablet = isTabletDevice();
 
+  // dynamic function
   const headersList = headers();
-  const geoData = JSON.parse(headersList.get("x-geo-data") || "{}");
+  const geoData = JSON.parse(
+    headersList.get("x-geo-data") || "{latitude: null, longitude: null}"
+  );
 
-  const isDark =
-    geoData?.latitude && geoData?.longitude
-      ? await isDarkMode(geoData.latitude, geoData.longitude)
-      : false;
+  const isDark = await isDarkMode(geoData);
 
   return (
     <>

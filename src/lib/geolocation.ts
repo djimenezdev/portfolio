@@ -1,4 +1,5 @@
-import { parseTimeString } from "./helpers";
+import { Geo } from "@vercel/functions";
+import { getTodayDate, parseTimeString } from "./helpers";
 
 // Add this function to handle IP address retrieval more securely
 export function getClientIp(headersList: Headers): string | null {
@@ -13,55 +14,54 @@ export function getClientIp(headersList: Headers): string | null {
   return headersList.get("remote-addr") || null;
 }
 
-/* export const getGeolocation = async (ip: string) => {
+// Function to fetch sunrise and sunset data from the API
+async function fetchSunriseSunsetData(geolocation: Geo) {
+  const timezoneApiUrl = `https://timeapi.io/api/time/current/coordinate?latitude=${geolocation.latitude}&longitude=${geolocation.longitude}`;
   try {
-    const res = await fetch(
-      `https://api.ip2location.io/?key=${process.env.IP2_LOCATION_KEY}&ip=${ip}`
-    );
-    const resData = await res.json();
-    console.log(resData);
-    return resData;
+    const response = await fetch(timezoneApiUrl);
+    if (!response.ok) {
+      throw new Error("Failed to fetch timezone for sunrise/sunset data");
+    }
+    const timzoneData = await response.json();
+    const todayDate = getTodayDate(timzoneData.dateTime);
+    const apiUrl = `https://api.sunrisesunset.io/json?lat=${geolocation.latitude}&lng=${geolocation.longitude}&date=${todayDate}`;
+
+    const sunriseSunsetResponse = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error("Failed to fetch sunrise/sunset data");
+    }
+    const sunriseSunsetData = await sunriseSunsetResponse.json();
+
+    return sunriseSunsetData.results;
   } catch (error) {
-    console.error("Error fetching geolocation:", error);
+    console.error("Error fetching sunrise/sunset data:", error);
     return null;
   }
-}; */
+}
 
-export const isDarkMode = async (lat: number, long: number) => {
-  try {
-    const res = await fetch(
-      `https://api.sunrisesunset.io/json?lat=${lat}&lng=${long}`
-    );
-    const resData = await res.json();
-    //   res returns results object which returns another object containing sunrise and sunset
-    // use that data to return
-    const { date, sunrise, sunset } = resData.results;
-    console.log(date, sunrise, sunset);
+export const isDarkMode = async (geolocation: Geo) => {
+  if (
+    !geolocation.latitude ||
+    !geolocation.longitude ||
+    !geolocation.country ||
+    !geolocation.city ||
+    !geolocation.flag ||
+    !geolocation.countryRegion ||
+    !geolocation.region
+  ) {
+    return false;
+  }
+  const sunriseSunsetData = await fetchSunriseSunsetData(geolocation);
+
+  if (!sunriseSunsetData) {
+    return false;
+  } else {
+    const { date, sunrise, sunset } = sunriseSunsetData;
+
     const now = new Date();
-    const nowUTC = new Date(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      now.getUTCHours(),
-      now.getUTCMinutes(),
-      now.getUTCSeconds()
-    );
-    const sunriseTime = parseTimeString(date, sunrise);
-    const sunsetTime = parseTimeString(date, sunset);
-    // If current time is after sunset, it's dark mode
-    if (nowUTC >= sunsetTime) {
-      return true;
-    }
+    const sunriseTime = parseTimeString(sunrise, date);
+    const sunsetTime = parseTimeString(sunset, date);
 
-    // If current time is before sunrise, it's dark mode
-    if (nowUTC < sunriseTime) {
-      return true;
-    }
-
-    // Otherwise, it's light mode (between sunrise and sunset)
-    return false;
-  } catch (error) {
-    console.error("Error fetching geolocation:", error);
-    return false;
+    return now < sunriseTime || now > sunsetTime;
   }
 };
