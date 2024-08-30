@@ -15,22 +15,12 @@ export function getClientIp(headersList: Headers): string | null {
 }
 
 // Function to fetch sunrise and sunset data from the API
-async function fetchSunriseSunsetData(geolocation: Geo) {
-  const timezoneApiUrl = `https://timeapi.io/api/time/current/coordinate?latitude=${geolocation.latitude}&longitude=${geolocation.longitude}`;
-  console.log("timezoneApiUrl --->  ", timezoneApiUrl);
+async function fetchSunriseSunsetData(date: string, geolocation: Geo) {
   try {
-    const response = await fetch(timezoneApiUrl);
-    if (!response.ok) {
-      throw new Error("Failed to fetch timezone for sunrise/sunset data");
-    }
-    const timzoneData = await response.json();
-    console.log("timezoneApiUrl response --->  ", timzoneData);
-    const todayDate = getTodayDate(timzoneData.dateTime);
-    console.log("todayDate --->  ", todayDate);
-    const apiUrl = `https://api.sunrisesunset.io/json?lat=${geolocation.latitude}&lng=${geolocation.longitude}&date=${todayDate}`;
+    const apiUrl = `https://api.sunrisesunset.io/json?lat=${geolocation.latitude}&lng=${geolocation.longitude}&date=${date}`;
     console.log("apiUrl --->  ", apiUrl);
     const sunriseSunsetResponse = await fetch(apiUrl);
-    if (!response.ok) {
+    if (!sunriseSunsetResponse.ok) {
       throw new Error("Failed to fetch sunrise/sunset data");
     }
     const sunriseSunsetData = await sunriseSunsetResponse.json();
@@ -54,7 +44,27 @@ export const isDarkMode = async (geolocation: Geo) => {
   ) {
     return false;
   }
-  const sunriseSunsetData = await fetchSunriseSunsetData(geolocation);
+
+  const timezoneApiUrl = `https://timeapi.io/api/time/current/coordinate?latitude=${geolocation.latitude}&longitude=${geolocation.longitude}`;
+  console.log("timezoneApiUrl --->  ", timezoneApiUrl);
+
+  const response = await fetch(timezoneApiUrl);
+  if (!response.ok) {
+    throw new Error("Failed to fetch timezone for sunrise/sunset data");
+  }
+  const timezoneData = await response.json();
+  console.log("timezoneApiUrl response --->  ", timezoneData);
+  const todayDate = getTodayDate(timezoneData.dateTime);
+  console.log("todayDate --->  ", todayDate);
+
+  if (!timezoneData) {
+    return false;
+  }
+
+  const sunriseSunsetData = await fetchSunriseSunsetData(
+    todayDate,
+    geolocation
+  );
 
   if (!sunriseSunsetData) {
     return false;
