@@ -32,7 +32,8 @@
     "tailwindcss-animate": "^1.0.7",
     "ua-parser-js": "^1.0.38",
     "zod": "^3.23.8",
-    "zod-validation-error": "^3.3.1"
+    "zod-validation-error": "^3.3.1",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,11 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
 import Anchor from "./Anchor";
 
-type FooterProps = {
-  setActive: Dispatch<SetStateAction<number>>;
-};
-
-const Footer = ({ setActive }: FooterProps) => {
+const Footer = () => {
   return (
     <footer
       id="footer"

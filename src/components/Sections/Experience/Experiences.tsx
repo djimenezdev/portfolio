@@ -1,33 +1,12 @@
-import { Dispatch, Fragment, SetStateAction, useEffect } from "react";
+import { Fragment } from "react";
 import { experiences } from "@/data/experiences";
 import Experience from "./Experience";
-import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { ImArrowUpRight2 } from "react-icons/im";
 import Link from "next/link";
 
-type ExperiencesProps = {
-  setActive: Dispatch<SetStateAction<number>>;
-};
-
-const Experiences = ({ setActive }: ExperiencesProps) => {
-  const [ref, entry] = useIntersectionObserver({
-    threshold: 0.9,
-    root: null,
-    rootMargin: "0px",
-  });
-
-  useEffect(() => {
-    if (entry?.isIntersecting) {
-      setActive((prev) => (prev !== 2 ? 2 : prev));
-    }
-  }, [entry]);
-
+const Experiences = () => {
   return (
-    <section
-      id="experience"
-      className="mb-16 scroll-mt-16 md:mb-24 xl:mb-36 xl:scroll-mt-24"
-      ref={ref}
-    >
+    <>
       <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-300/35 dark:bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 xl:sr-only xl:relative xl:top-auto xl:mx-auto xl:w-full xl:px-0 xl:py-0 xl:opacity-0">
         <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700 dark:text-slate-200 xl:sr-only">
           Experience
@@ -62,7 +41,7 @@ const Experiences = ({ setActive }: ExperiencesProps) => {
           </Link>
         </div>
       </div>
-    </section>
+    </>
   );
 };
 export default Experiences;

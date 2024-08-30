@@ -1,31 +1,8 @@
-import { useIntersectionObserver } from "@uidotdev/usehooks";
 import Anchor from "../Anchor";
-import { Dispatch, SetStateAction, useEffect } from "react";
 
-type AboutProps = {
-  setActive: Dispatch<SetStateAction<number>>;
-};
-
-const About = ({ setActive }: AboutProps) => {
-  const [ref, entry] = useIntersectionObserver({
-    threshold: 1,
-    root: null,
-    rootMargin: "0px",
-  });
-
-  useEffect(() => {
-    if (entry?.isIntersecting) {
-      setActive((prev) => (prev !== 1 ? 1 : prev));
-    }
-  }, [entry]);
-
+const About = () => {
   return (
-    <section
-      id="about"
-      ref={ref}
-      className="mb-16 scroll-mt-16 md:mb-24 xl:mb-36 xl:scroll-mt-24"
-      aria-label="About Section"
-    >
+    <>
       {/* accessibility element */}
       <div className="sticky top-0 z-20 -mx-6 mb-4 w-screen bg-slate-300/35 dark:bg-slate-900/75 px-6 py-5 backdrop-blur md:-mx-12 md:px-12 xl:sr-only xl:relative xl:top-auto xl:mx-auto xl:w-full xl:px-0 xl:py-0 xl:opacity-0">
         <h2 className="text-sm font-bold uppercase tracking-widest text-gray-700 dark:text-slate-200 xl:sr-only">
@@ -93,7 +70,7 @@ const About = ({ setActive }: AboutProps) => {
           fan for life.
         </p>
       </div>
-    </section>
+    </>
   );
 };
 export default About;

@@ -1,4 +1,6 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { ErrorFields, redirectOnSuccess, sendEmail } from "@/app/actions";
@@ -7,10 +9,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { sleeper } from "@/lib/helpers";
-
-type ContactProps = {
-  setActive: Dispatch<SetStateAction<number>>;
-};
+import { useStore } from "@/providers/dataProvider";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -29,13 +28,13 @@ function SubmitButton() {
   );
 }
 
-const Contact = ({ setActive }: ContactProps) => {
+const Contact = () => {
   const [errors, setErrors] = useState<Partial<ErrorFields>>({});
-
   const [complete, setComplete] = useState<{
     completed: boolean;
     success: boolean;
   }>({ completed: false, success: false });
+  const setActive = useStore((state) => state.setActive);
 
   const [ref, entry] = useIntersectionObserver({
     threshold: 0.8,
@@ -45,7 +44,7 @@ const Contact = ({ setActive }: ContactProps) => {
 
   useEffect(() => {
     if (entry?.isIntersecting) {
-      setActive((prev) => (prev !== 4 ? 4 : prev));
+      setActive(4);
     }
   }, [entry]);
 
