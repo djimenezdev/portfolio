@@ -47,19 +47,9 @@ export default async function HomePage() {
 
   // dynamic function
   const headersList = headers();
-  /* const geoData = JSON.parse(
+  const geoData = JSON.parse(
     headersList.get("x-geo-data") || "{latitude: null, longitude: null}"
-  ); */
-
-  const geoData = {
-    city: "Lake%20Forest",
-    country: "US",
-    flag: "🇺🇸",
-    countryRegion: "CA",
-    region: "sfo1",
-    latitude: "33.6416",
-    longitude: "-117.6898",
-  };
+  );
 
   const isDark = await isDarkMode(geoData);
 
