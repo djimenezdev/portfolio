@@ -44,16 +44,13 @@ export const isDarkMode = async (geolocation: Geo) => {
   }
 
   const timezoneApiUrl = `https://timeapi.io/api/time/current/coordinate?latitude=${geolocation.latitude}&longitude=${geolocation.longitude}`;
-  console.log("timezoneApiUrl --->  ", timezoneApiUrl);
 
   const response = await fetch(timezoneApiUrl);
   if (!response.ok) {
-    throw new Error("Failed to fetch timezone for sunrise/sunset data");
+    return false;
   }
   const timezoneData = await response.json();
-  console.log("timezoneData --->  ", timezoneData);
   const todayDateFormatted = getTodayDate(timezoneData.dateTime);
-  console.log("todayDateFormatted --->  ", todayDateFormatted);
 
   if (!timezoneData) {
     return false;
@@ -71,7 +68,6 @@ export const isDarkMode = async (geolocation: Geo) => {
 
     const timeDate = new Date(timezoneData.dateTime);
     if (isNaN(timeDate.getTime())) {
-      console.error("Invalid date format received from API");
       return false;
     }
     const sunriseTime = parseTimeString(sunrise, timeDate);
