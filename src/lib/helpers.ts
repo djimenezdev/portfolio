@@ -12,21 +12,18 @@ export const getTodayDate = (dateString: string) => {
 };
 
 // Function to parse time string and create a Date object
-export const parseTimeString = (timeStr: string, dateStr: string) => {
-  const [time, period] = timeStr.split(" ");
-  let [hours, minutes, seconds] = time.split(":").map(Number);
+export function parseTimeString(timeString: string, baseDate: Date): Date {
+  const [time, period] = timeString.split(" ");
+  const [hours, minutes] = time.split(":").map(Number);
 
-  // Convert to 24-hour format if PM
-  if (period === "PM" && hours !== 12) {
-    hours += 12;
-  } else if (period === "AM" && hours === 12) {
-    hours = 0;
+  let adjustedHours = hours;
+  if (period.toLowerCase() === "pm" && hours !== 12) {
+    adjustedHours += 12;
+  } else if (period.toLowerCase() === "am" && hours === 12) {
+    adjustedHours = 0;
   }
 
-  const [year, month, day] = dateStr.split("-").map(Number);
-
-  // create date object
-  const date = new Date(year, month - 1, day, hours, minutes, seconds);
-
-  return date;
-};
+  const result = new Date(baseDate);
+  result.setHours(adjustedHours, minutes, 0, 0);
+  return result;
+}
