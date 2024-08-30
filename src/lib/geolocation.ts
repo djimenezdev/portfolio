@@ -67,6 +67,9 @@ export const isDarkMode = async (geolocation: Geo) => {
     console.log("sunriseTime --->  ", sunriseTime);
     console.log("sunsetTime --->  ", sunsetTime);
 
+    console.log("now --->  ", now);
+    console.log("now < sunriseTime --->  ", now < sunriseTime);
+    console.log("now > sunsetTime --->  ", now > sunsetTime);
     return now < sunriseTime || now > sunsetTime;
   }
 };
